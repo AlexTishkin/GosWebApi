@@ -4,14 +4,16 @@ using GosWebApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GosWebApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20190727145503_Companies")]
+    partial class Companies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,20 +30,7 @@ namespace GosWebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("GosWebApi.Models.CompanySubTheme", b =>
-                {
-                    b.Property<Guid>("CompanyId");
-
-                    b.Property<Guid>("SubThemeId");
-
-                    b.HasKey("CompanyId", "SubThemeId");
-
-                    b.HasIndex("SubThemeId");
-
-                    b.ToTable("CompanySubTheme");
+                    b.ToTable("Company");
                 });
 
             modelBuilder.Entity("GosWebApi.Models.SubTheme", b =>
@@ -257,19 +246,6 @@ namespace GosWebApi.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("GosWebApi.Models.CompanySubTheme", b =>
-                {
-                    b.HasOne("GosWebApi.Models.Company", "Company")
-                        .WithMany("CompanySubThemes")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GosWebApi.Models.SubTheme", "SubTheme")
-                        .WithMany("CompanySubThemes")
-                        .HasForeignKey("SubThemeId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GosWebApi.Models.SubTheme", b =>

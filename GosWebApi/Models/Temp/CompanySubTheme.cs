@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,14 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GosWebApi.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class CompanySubTheme
     {
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-
-        public Guid? CompanyId { get; set; }
+        public Guid CompanyId { get; set; }
         public Company Company { get; set; }
 
+        public Guid SubThemeId { get; set; }
+        public SubTheme SubTheme { get; set; }
     }
 }

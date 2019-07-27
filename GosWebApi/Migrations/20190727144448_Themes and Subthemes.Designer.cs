@@ -4,45 +4,22 @@ using GosWebApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GosWebApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20190727144448_Themes and Subthemes")]
+    partial class ThemesandSubthemes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("GosWebApi.Models.Company", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("GosWebApi.Models.CompanySubTheme", b =>
-                {
-                    b.Property<Guid>("CompanyId");
-
-                    b.Property<Guid>("SubThemeId");
-
-                    b.HasKey("CompanyId", "SubThemeId");
-
-                    b.HasIndex("SubThemeId");
-
-                    b.ToTable("CompanySubTheme");
-                });
 
             modelBuilder.Entity("GosWebApi.Models.SubTheme", b =>
                 {
@@ -246,30 +223,13 @@ namespace GosWebApi.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<Guid?>("CompanyId");
-
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
                     b.Property<string>("MiddleName");
 
-                    b.HasIndex("CompanyId");
-
                     b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("GosWebApi.Models.CompanySubTheme", b =>
-                {
-                    b.HasOne("GosWebApi.Models.Company", "Company")
-                        .WithMany("CompanySubThemes")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GosWebApi.Models.SubTheme", "SubTheme")
-                        .WithMany("CompanySubThemes")
-                        .HasForeignKey("SubThemeId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GosWebApi.Models.SubTheme", b =>
@@ -322,13 +282,6 @@ namespace GosWebApi.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GosWebApi.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("GosWebApi.Models.Company", "Company")
-                        .WithMany("Users")
-                        .HasForeignKey("CompanyId");
                 });
 #pragma warning restore 612, 618
         }
