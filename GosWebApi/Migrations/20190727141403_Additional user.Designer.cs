@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GosWebApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190727122929_Initial")]
-    partial class Initial
+    [Migration("20190727141403_Additional user")]
+    partial class Additionaluser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -195,8 +195,11 @@ namespace GosWebApi.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(150)");
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("MiddleName");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });

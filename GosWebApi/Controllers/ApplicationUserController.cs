@@ -32,29 +32,29 @@ namespace GosWebApi.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [HttpPost]
-        [Route("Register")]
-        //POST : /api/ApplicationUser/Register
-        public async Task<Object> PostApplicationUser(ApplicationUserModel model)
-        {
-            var applicationUser = new ApplicationUser()
-            {
-                UserName = model.UserName,
-                Email = model.Email,
-                FullName = model.FullName
-            };
+        //[HttpPost]
+        //[Route("Register")]
+        ////POST : /api/ApplicationUser/Register
+        //public async Task<Object> PostApplicationUser(ApplicationUserModel model)
+        //{
+        //    var applicationUser = new ApplicationUser()
+        //    {
+        //        UserName = model.UserName,
+        //        Email = model.Email,
+        //        FullName = model.FullName
+        //    };
 
-            try
-            {
-                var result = await _userManager.CreateAsync(applicationUser, model.Password);
-                await _userManager.AddToRoleAsync(applicationUser, model.Role);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //    try
+        //    {
+        //        var result = await _userManager.CreateAsync(applicationUser, model.Password);
+        //        await _userManager.AddToRoleAsync(applicationUser, model.Role);
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         [HttpPost]
         [Route("Login")]

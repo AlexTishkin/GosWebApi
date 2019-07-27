@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GosWebApi.Models
 {
-    public class AuthenticationContext : IdentityDbContext
+    public class ApplicationContext : IdentityDbContext
     {
-        public AuthenticationContext(DbContextOptions options) : base(options) { }
+        public ApplicationContext(DbContextOptions options) : base(options) { }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
