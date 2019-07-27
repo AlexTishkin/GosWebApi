@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +14,11 @@ namespace GosWebApi.Models
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
+            #region Database fill
+
+            // TODO: Тупая перезачистка
+
+
             // TODO: Тупая перезачистка
             context.Roles.RemoveRange(context.Roles.ToList());
             context.Users.RemoveRange(context.Users.ToList());
@@ -53,6 +58,8 @@ namespace GosWebApi.Models
             context.Companies.AddRange(new List<Company> {c1, c2});
 
             context.SaveChanges();
+
+            #endregion
         }
 
         private static async Task InitializeRoles(RoleManager<IdentityRole> roleManager)

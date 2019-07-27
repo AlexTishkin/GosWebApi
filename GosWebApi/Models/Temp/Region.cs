@@ -9,21 +9,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GosWebApi.Models
 {
-    public class SubTheme
+    public class Region
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         public string Name { get; set; }
-        public Guid ThemeId { get; set; }
-        public Theme Theme { get; set; }
 
-        public ICollection<CompanySubTheme> CompanySubThemes { get; set; }
+        public ICollection<Report> Reports { get; set; }
 
-        public SubTheme()
+        public Region()
         {
-            CompanySubThemes = new List<CompanySubTheme>();
+            Reports = new List<Report>();
         }
     }
 }

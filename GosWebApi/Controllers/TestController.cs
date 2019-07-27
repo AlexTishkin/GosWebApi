@@ -24,11 +24,9 @@ namespace GosWebApi.Controllers
         public async Task<IActionResult> Get()
         {
             var themes = await _db.Themes.Include(t => t.SubThemes).ToListAsync();
-
             var themeViewModels = themes.Select(t => new ThemeViewModel(t.Id, t.Name, t.SubThemes));
 
             return Json(themeViewModels);
         }
-
     }
 }
