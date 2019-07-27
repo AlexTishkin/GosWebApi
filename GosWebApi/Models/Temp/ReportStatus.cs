@@ -16,5 +16,6 @@ namespace GosWebApi.Models
 
         public Guid StatusId { get; set; }
         public Status Status { get; set; }
+        public DateTime Datetime { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace GosWebApi.Models
         public Guid Id { get; set; }
 
         public string Name { get; set; }
+        public bool IsCommercial { get; set; }
 
         public ICollection<ApplicationUser> Users { get; set; }
 
