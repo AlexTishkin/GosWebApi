@@ -20,10 +20,12 @@ namespace GosWebApi.Models
         public Theme Theme { get; set; }
 
         public ICollection<CompanySubTheme> CompanySubThemes { get; set; }
+        public ICollection<Report> Reports { get; set; }
 
         public SubTheme()
         {
             CompanySubThemes = new List<CompanySubTheme>();
+            Reports = new List<Report>();
         }
     }
 }

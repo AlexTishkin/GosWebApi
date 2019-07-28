@@ -7,17 +7,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GosWebApi.Models
+namespace GosWebApi.ViewModels
 {
-    public class Ref
+    public class SetStatusViewModel
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-
-        public Ref(Guid id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
+        public Guid? ReportId { get; set; }
+        public Guid? StatusId { get; set; }
+        public string FailMessage { get; set; }
     }
 }

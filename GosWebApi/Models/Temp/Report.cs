@@ -14,6 +14,7 @@ namespace GosWebApi.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
         public string Message { get; set; }
         public string FailMessage { get; set; }
         public string Address { get; set; }
@@ -30,6 +31,10 @@ namespace GosWebApi.Models
         // Компания, что реализует задачу...
         public Guid? CompanyId { get; set; }
         public Company Company { get; set; }
+
+        // Тема...
+        public Guid? SubThemeId { get; set; }
+        public SubTheme SubTheme { get; set; }
 
         // Регион (Пусть пока будет)
         public Guid? RegionId { get; set; }

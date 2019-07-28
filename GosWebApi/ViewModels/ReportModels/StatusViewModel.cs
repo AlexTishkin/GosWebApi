@@ -4,20 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using GosWebApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GosWebApi.Models
+namespace GosWebApi.ViewModels
 {
-    public class Ref
+    public class StatusViewModel
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-
-        public Ref(Guid id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
+        public String Name { get; set; }
+        public DateTime Datetime { get; set; }
     }
 }

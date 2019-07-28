@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GosWebApi.Models
 {
@@ -116,7 +117,7 @@ namespace GosWebApi.Models
 
             Report report = new Report
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("CE11234F-D975-4AD4-A07F-B3175045D4E5"),
                 LastName = "Клюев",
                 FirstName = "Антон",
                 MiddleName = "Александрович",
@@ -127,12 +128,13 @@ namespace GosWebApi.Models
                 Email = "freemandns@mail.ru",
                 CompanyId = c1.Id,
                 Mark = 1,
+                SubTheme = subTheme11,
                 MarkDescription = "Работа не выполнена"
             };
 
             var report2 = new Report
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("DCA26404-32BC-473B-8D45-AEBDE68535C9"),
                 LastName = "Николенко",
                 FirstName = "Анна",
                 MiddleName = "Петровна",
@@ -143,6 +145,7 @@ namespace GosWebApi.Models
                 Email = "freemandns@mail.ru",
                 CompanyId = c2.Id,
                 Mark = 1,
+                SubTheme = subTheme21,
                 MarkDescription = "Работа не выполнена"
             };
 
@@ -152,13 +155,14 @@ namespace GosWebApi.Models
 
             report.ReportStatuses.Add(new ReportStatus
             {
-                ReportId = report.Id,
+                ReportId = Guid.Parse("CE11234F-D975-4AD4-A07F-B3175045D4E5"),
                 Status = db.Statuses.First(),
                 Datetime = DateTime.Now
             });
+            
             report.ReportStatuses.Add(new ReportStatus
             {
-                ReportId = report.Id,
+                ReportId = Guid.Parse("DCA26404-32BC-473B-8D45-AEBDE68535C9"),
                 Status = db.Statuses.Last(),
                 Datetime = DateTime.Now
             });

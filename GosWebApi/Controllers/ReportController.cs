@@ -62,6 +62,7 @@ namespace GosWebApi.Controllers
                 Email = report.Email,
                 Address = report.Address,
                 Message = report.Message,
+                SubTheme = subTheme,
                 Company = implementerCompanyId
             };
 
@@ -78,34 +79,88 @@ namespace GosWebApi.Controllers
         }
 
 
-        [HttpPost]
-        [Route("/api/reports")]
+        [HttpGet]
+        [Route("/api/reports/{email}")]
         //POST : /api/reports
         public async Task<IActionResult> GetReportsByEmail(string email)
         {
             if (email == null) return BadRequest();
 
-            return null;
+            var reports = await _db.Reports
+                .Include(r => r.SubTheme)
+                .Include(r => r.Company)
+                .Include(r => r.ReportStatuses)
+                .ThenInclude(rs => rs.Status)
+                .Where(r => r.Email.Equals(email, StringComparison.OrdinalIgnoreCase))
+                .ToListAsync();
+
+            var outputReports = reports.Select(r =>
+                    new ReportArrayItemViewModel(r.Company.Name
+                        , GetThemeName(r)
+                        , r.SubTheme.Name
+                        // ТУТ КОСЯК!!! ИСПРАВИТЬ В БАЗЕ
+                        , DateTime.Now
+                        , GetStatuses(r)))
+                .ToList();
+
+            return Json(outputReports);
         }
 
+        #region Additional functions to /api/reports
+
+        private string GetThemeName(Report report)
+        {
+            var subThemeId = report.SubThemeId;
+            var themeName = _db.SubThemes
+                .Include(s => s.Theme)
+                .First(s => s.Id == subThemeId)
+                .Theme.Name;
+            return themeName;
+        }
+
+        private DateTime GetStartDate(Report report)
+        {
+            var r = report.ReportStatuses.Min(rs => rs.Datetime);
+            return r;
+        }
+
+        private IEnumerable<StatusViewModel> GetStatuses(Report report)
+        {
+            var statuses = report.ReportStatuses.Select(rs => new StatusViewModel
+                {Id = rs.StatusId, Datetime = rs.Datetime, Name = rs.Status.Name});
+            return statuses;
+        }
+
+        #endregion
 
         [HttpPost]
         [Route("/api/setStatus")]
         //POST : /api/setStatus
-        public async Task<IActionResult> SetStatus(Guid idReport, Guid idStatus, string failMessage = null)
+        public async Task<IActionResult> SetStatus(SetStatusViewModel setStatusViewModel)
         {
-            if (!string.IsNullOrWhiteSpace(value: failMessage))
+            if (setStatusViewModel.ReportId == null || setStatusViewModel.StatusId == null) return BadRequest();
+
+            if (!string.IsNullOrWhiteSpace(value: setStatusViewModel.FailMessage))
             {
-                _db.Reports.First(predicate => predicate.Id.Equals(idReport)).FailMessage = failMessage;
+                var changedReport =
+                    await _db.Reports.FirstAsync(predicate: predicate =>
+                        predicate.Id.Equals(setStatusViewModel.ReportId));
+                changedReport.FailMessage = setStatusViewModel.FailMessage;
+                _db.Entry(changedReport).State = EntityState.Modified;
             }
 
-            _db.Reports.First(predicate: predicate => predicate.Id.Equals(idReport)).ReportStatuses.Add(new ReportStatus{
-                ReportId = idReport,
-                StatusId = idStatus,
-                Datetime = DateTime.Now
-            });
-            return null;
-        }
+            var addedReport = _db.Reports.First(predicate => predicate.Id.Equals(setStatusViewModel.ReportId));
+            addedReport.ReportStatuses.Add(
+                new ReportStatus
+                {
+                    ReportId = setStatusViewModel.ReportId.Value, StatusId = setStatusViewModel.StatusId.Value,
+                    Datetime = DateTime.Now
+                });
 
+            _db.Entry(addedReport).State = EntityState.Modified;
+
+            _db.SaveChanges();
+            return Ok();
+        }
     }
 }

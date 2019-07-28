@@ -46,10 +46,4 @@ namespace GosWebApi.ViewModels
         }
     }
 
-    public class StatusViewModel
-    {
-        public Guid Id { get; set; }
-        public String Name { get; set; }
-        public DateTime Datetime { get; set; }
-    }
 }

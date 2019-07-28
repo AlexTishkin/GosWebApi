@@ -18,7 +18,7 @@ namespace GosWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationUserController : ControllerBase
+    public class ApplicationUserController : Controller
     {
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
@@ -102,6 +102,7 @@ namespace GosWebApi.Controllers
         //POST : /api/profile
         public async Task<IActionResult> Profile()
         {
+            // TODO: Can be mistakes...
             var userId = HttpContext.User.Claims.FirstOrDefault(t => t.Type == "UserID");
             if (userId == null) return StatusCode(401);
 
@@ -109,20 +110,36 @@ namespace GosWebApi.Controllers
 
             var company = _db.Companies.First(c => c.Id == currentUser.CompanyId);
 
-            var reports = _db.Reports.Where(r => r.CompanyId == company.Id);
+            var reports = _db.Reports
+                .Include(r => r.ReportStatuses)
+                .ThenInclude(rs => rs.Status)
+                .Where(r => r.CompanyId == company.Id);
 
-            
-             
-            var profileReports = reports.Select(r => new ProfileReportViewModel(r.Id, r.Message, DateTime.Now, null)).ToList();
+            var profileReports = reports.Select(r =>
+                new ProfileReportViewModel(r.Id, r.Message, GetStartDate(r), GetLastStatus(r))).ToList();
 
             var profileViewModel = new ProfileViewModel(currentUser.LastName
                 , currentUser.FirstName
                 , currentUser.MiddleName
                 , profileReports);
 
+            var allStatuses = await _db.Statuses.Select(s => new Ref(s.Id, s.Name)).ToListAsync();
 
-
-            return null;
+            return Json(new
+            {
+                ProfileViewModel = profileViewModel,
+                AllStatuses = allStatuses
+            });
         }
+
+        private DateTime GetStartDate(Report report) => report.ReportStatuses.Min(rs => rs.Datetime);
+
+        private StatusViewModel GetLastStatus(Report report)
+        {
+            var dateTime = report.ReportStatuses.Max(rs => rs.Datetime);
+            var status = report.ReportStatuses.First(rs => rs.Datetime == dateTime).Status;
+            return new StatusViewModel {Id = status.Id, Name = status.Name, Datetime = dateTime};
+        }
+        
     }
 }
