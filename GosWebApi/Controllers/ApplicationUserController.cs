@@ -6,8 +6,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using GosWebApi.Models;
+using GosWebApi.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,15 +24,20 @@ namespace GosWebApi.Controllers
         private RoleManager<IdentityRole> _roleManager;
         private SignInManager<ApplicationUser> _singInManager;
         private readonly ApplicationSettings _appSettings;
+        private readonly ApplicationContext _db;
 
-        public ApplicationUserController(UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager,
-            IOptions<ApplicationSettings> appSettings)
+        public ApplicationUserController(
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<ApplicationUser> signInManager,
+            IOptions<ApplicationSettings> appSettings,
+            ApplicationContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _singInManager = signInManager;
             _appSettings = appSettings.Value;
+            _db = context;
         }
 
         //[HttpPost]
@@ -75,7 +83,7 @@ namespace GosWebApi.Controllers
                         new Claim("UserID", user.Id.ToString()),
                         new Claim(_options.ClaimsIdentity.RoleClaimType, role.FirstOrDefault())
                     }),
-                    Expires = null,//DateTime.UtcNow.AddDays(1),
+                    Expires = null, //DateTime.UtcNow.AddDays(1),
                     SigningCredentials = new SigningCredentials(
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)),
                         SecurityAlgorithms.HmacSha256Signature)
@@ -86,6 +94,35 @@ namespace GosWebApi.Controllers
                 return Ok(new {token});
             }
             else return BadRequest(new {message = "Username or password is incorrect."});
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("/profile")]
+        //POST : /api/profile
+        public async Task<IActionResult> Profile()
+        {
+            var userId = HttpContext.User.Claims.FirstOrDefault(t => t.Type == "UserID");
+            if (userId == null) return StatusCode(401);
+
+            var currentUser = await _userManager.FindByIdAsync(userId.Value);
+
+            var company = _db.Companies.First(c => c.Id == currentUser.CompanyId);
+
+            var reports = _db.Reports.Where(r => r.CompanyId == company.Id);
+
+            
+             
+            var profileReports = reports.Select(r => new ProfileReportViewModel(r.Id, r.Message, DateTime.Now, null)).ToList();
+
+            var profileViewModel = new ProfileViewModel(currentUser.LastName
+                , currentUser.FirstName
+                , currentUser.MiddleName
+                , profileReports);
+
+
+
+            return null;
         }
     }
 }

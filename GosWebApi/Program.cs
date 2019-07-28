@@ -29,7 +29,8 @@ namespace GosWebApi
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var context = services.GetRequiredService<ApplicationContext>();
-                    await DBInitializer.InitializeAsync(context, userManager, rolesManager);
+                    // TODO: Перезаполнение базы -- РАССКОМЕНТИРОВАТЬ ПОСЛЕ!!!
+                    //await DBInitializer.InitializeAsync(context, userManager, rolesManager);
                 }
                 catch (Exception ex)
                 {

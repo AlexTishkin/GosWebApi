@@ -64,38 +64,6 @@ namespace GosWebApi.Models
 
             db.SaveChanges();
 
-            Report report = new Report
-            {
-                Id = Guid.NewGuid(),
-                LastName = "Клюев",
-                FirstName = "Антон",
-                MiddleName = "Александрович",
-                Message = "\"Замороженная\" стройка",
-                FailMessage = "Стройку так и не разморозили...",
-                RegionId = db.Regions.First().Id,
-                Address = "г. Курск, пр-т Победы, дом 32, кв. 192",
-                Email = "freemandns@mail.ru",
-                CompanyId = c1.Id,
-                Mark = 1,
-                MarkDescription = "Работа не выполнена"
-            };
-            db.Reports.Add(report);
-            db.Reports.Add(new Report
-            {
-                Id = Guid.NewGuid(),
-                LastName = "Николенко",
-                FirstName = "Анна",
-                MiddleName = "Петровна",
-                Message = "Безопасная дорога в школу на дорогах в границах городских округов и сельских поселений",
-                FailMessage = string.Empty,
-                RegionId = db.Regions.Last().Id,
-                Address = "г. Курск, пр-т Победы, дом 32, кв. 192",
-                Email = "freemandns@mail.ru",
-                CompanyId = c2.Id,
-                Mark = 1,
-                MarkDescription = "Работа не выполнена"
-            });
-            db.SaveChanges();
 
             db.Statuses.Add(new Status
             {
@@ -129,31 +97,73 @@ namespace GosWebApi.Models
             });
             db.SaveChanges();
 
+            var r1 = new Region
+            {
+                Id = Guid.Parse("5B5317B8-1CB3-4FBB-877D-6BB66A9E60CB"),
+                Name = "Центральный район"
+            };
+            var r2 = new Region
+            {
+                Id = Guid.Parse("95536638-6086-4E08-884A-70D4B0C698FD"),
+                Name = "Сеймский район"
+            };
+
+            db.Regions.Add(r1);
+            db.Regions.Add(r2);
+            db.SaveChanges();
+
+            // Beda
+
+            Report report = new Report
+            {
+                Id = Guid.NewGuid(),
+                LastName = "Клюев",
+                FirstName = "Антон",
+                MiddleName = "Александрович",
+                Message = "\"Замороженная\" стройка",
+                FailMessage = "Стройку так и не разморозили...",
+                Region = r1,
+                Address = "г. Курск, пр-т Победы, дом 32, кв. 192",
+                Email = "freemandns@mail.ru",
+                CompanyId = c1.Id,
+                Mark = 1,
+                MarkDescription = "Работа не выполнена"
+            };
+
+            var report2 = new Report
+            {
+                Id = Guid.NewGuid(),
+                LastName = "Николенко",
+                FirstName = "Анна",
+                MiddleName = "Петровна",
+                Message = "Безопасная дорога в школу на дорогах в границах городских округов и сельских поселений",
+                FailMessage = string.Empty,
+                Region = r2,
+                Address = "г. Курск, пр-т Победы, дом 32, кв. 192",
+                Email = "freemandns@mail.ru",
+                CompanyId = c2.Id,
+                Mark = 1,
+                MarkDescription = "Работа не выполнена"
+            };
+
+            db.Reports.Add(report);
+            db.Reports.Add(report2);
+            db.SaveChanges();
+
             report.ReportStatuses.Add(new ReportStatus
             {
                 ReportId = report.Id,
-                StatusId = db.Statuses.First().Id,
+                Status = db.Statuses.First(),
                 Datetime = DateTime.Now
             });
             report.ReportStatuses.Add(new ReportStatus
             {
                 ReportId = report.Id,
-                StatusId = db.Statuses.Last().Id,
+                Status = db.Statuses.Last(),
                 Datetime = DateTime.Now
             });
             db.SaveChanges();
 
-            db.Regions.Add(new Region
-            {
-                Id = Guid.NewGuid(),
-                Name = "Центральный район"
-            });
-            db.Regions.Add(new Region
-            {
-                Id = Guid.NewGuid(),
-                Name = "Сеймский район"
-            });
-            db.SaveChanges();
 
             // add users to company
             var _impl1 = await userManager.FindByEmailAsync("impl@impl.ru");
