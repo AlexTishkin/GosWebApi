@@ -17,10 +17,7 @@ namespace GosWebApi.Models
         {
             #region Database fill
 
-            // TODO: Тупая перезачистка
-
-
-            // TODO: Тупая перезачистка
+            // перезачистка
             db.Roles.RemoveRange(db.Roles.ToList());
             db.Users.RemoveRange(db.Users.ToList());
             db.SubThemes.RemoveRange(db.SubThemes.ToList());
@@ -36,17 +33,54 @@ namespace GosWebApi.Models
 
             var theme1 = new Theme {Name = "ЖКХ"};
             var theme2 = new Theme {Name = "Автомобильные дороги"};
-            db.Themes.Add(theme1);
-            db.Themes.Add(theme2);
+
+
+            var theme3 = new Theme {Name = "Связь и телекоммуникации"};
+            var theme4 = new Theme {Name = "Трудовые отношения"};
+            var theme5 = new Theme {Name = "Социальная сфера"};
+            var theme6 = new Theme {Name = "Экология"};
+            var theme7 = new Theme {Name = "Торговля, товары и услуги"};
+
+
+
+            db.Themes.AddRange(new List<Theme>{ theme1, theme2, theme3, theme4, theme5, theme6, theme7});
+            //db.Themes.Add(theme2);
             db.SaveChanges();
 
             var subTheme11 = new SubTheme {Id = Guid.NewGuid(), Name = "Многоквартирные дома", Theme = theme1};
             var subTheme12 = new SubTheme {Id = Guid.NewGuid(), Name = "Частный сектор", Theme = theme1};
 
-            var subTheme21 = new SubTheme
-                {Id = Guid.NewGuid(), Name = "Безопасная дорога в учебное заведение", Theme = theme2};
+            var subTheme21 = new SubTheme  {Id = Guid.NewGuid(), Name = "Безопасная дорога в учебное заведение", Theme = theme2};
             var subTheme22 = new SubTheme {Id = Guid.NewGuid(), Name = "Дорожная разметка", Theme = theme2};
-            db.SubThemes.AddRange(new List<SubTheme> {subTheme11, subTheme12, subTheme21, subTheme22});
+            /////////// subThemes
+            var subTheme31 = new SubTheme  {Id = Guid.NewGuid(), Name = "Отсутствие услуги доступа в сеть Интернет", Theme = theme3};
+            var subTheme32 = new SubTheme {Id = Guid.NewGuid(), Name = "Нарушение графика работы отделений связи", Theme = theme3};
+            var subTheme33 = new SubTheme {Id = Guid.NewGuid(), Name = "Некачественное предоставление услуг кабельного и цифрового телевидения", Theme = theme3};
+
+            var subTheme41 = new SubTheme  {Id = Guid.NewGuid(), Name = "Не оформленные трудовые отношения", Theme = theme4};
+            var subTheme42 = new SubTheme {Id = Guid.NewGuid(), Name = "Несвоевременная выплата заработной платы", Theme = theme4};
+
+            var subTheme51 = new SubTheme  {Id = Guid.NewGuid(), Name = "Наличие очереди на места в дошкольные учреждения", Theme = theme5};
+            var subTheme52 = new SubTheme {Id = Guid.NewGuid(), Name = "Нарушения в вопросах опеки и попечительства", Theme = theme5};
+
+            var subTheme61 = new SubTheme  {Id = Guid.NewGuid(), Name = "Загрязнение водных объектов", Theme = theme6};
+            var subTheme62 = new SubTheme {Id = Guid.NewGuid(), Name = "Загрязнение атмосферы пылевыми выбросами", Theme = theme6};
+
+            var subTheme71 = new SubTheme  {Id = Guid.NewGuid(), Name = "Нарушения, связанные с предоставлением услуг ОСАГО", Theme = theme7};
+            var subTheme72 = new SubTheme {Id = Guid.NewGuid(), Name = "Неудовлетворительное качество товара, оказания услуги", Theme = theme7};
+
+
+
+
+            db.SubThemes.AddRange(new List<SubTheme> {subTheme11, subTheme12
+                , subTheme21, subTheme22
+                , subTheme31, subTheme32, subTheme33
+                , subTheme41, subTheme42
+                , subTheme51, subTheme52
+                , subTheme61, subTheme62
+                , subTheme71, subTheme72
+
+            });
             db.SaveChanges();
 
             // Add Company and Subthemes 
@@ -58,8 +92,25 @@ namespace GosWebApi.Models
             c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme11.Id});
             c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme12.Id});
 
-            c2.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c2.Id, SubThemeId = subTheme21.Id});
-            c2.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c2.Id, SubThemeId = subTheme22.Id});
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme21.Id});
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme22.Id});
+
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme31.Id});
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme32.Id});
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme33.Id});
+
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme41.Id});
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme42.Id});
+
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme51.Id});
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme52.Id});
+
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme61.Id});
+            c1.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme62.Id});
+
+            c2.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme71.Id});
+            c2.CompanySubThemes.Add(new CompanySubTheme {CompanyId = c1.Id, SubThemeId = subTheme72.Id});
+
 
             db.Companies.AddRange(new List<Company> {c1, c2});
 
