@@ -15,5 +15,17 @@ namespace GosWebApi.ViewModels
         public Guid Id { get; set; }
         public String Name { get; set; }
         public DateTime Datetime { get; set; }
+        public int Order { get; set; }
+
+        public StatusViewModel()
+        {
+        }
+
+        public StatusViewModel(Guid id, string name, int order)
+        {
+            Id = id;
+            Name = name;
+            Order = order;
+        }
     }
 }

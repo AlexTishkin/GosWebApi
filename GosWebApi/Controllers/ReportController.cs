@@ -140,7 +140,7 @@ namespace GosWebApi.Controllers
         //GET : /api/setStatus
         public async Task<IActionResult> GetStatuses()
         {
-            var statuses = await _db.Statuses.Select(s => new Ref(s.Id, s.Name)).ToListAsync();
+            var statuses = await _db.Statuses.Select(s => new StatusViewModel(s.Id, s.Name, s.Order)).ToListAsync();
             return Json(statuses);
         }
 

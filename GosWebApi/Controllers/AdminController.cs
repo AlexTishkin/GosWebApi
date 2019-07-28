@@ -42,7 +42,8 @@ namespace GosWebApi.Controllers
                 .ThenInclude(r => r.Status)
                 .Where(r => r.CompanyId == currentUser.CompanyId)
                 //.Where(r => r.CompanyId == Guid.Parse("9038b2cc-5f36-4138-a852-6eaddced11f9"))
-                .Select(r => new ImplementorViewModel(r.LastName, r.FirstName, r.MiddleName, r.Message, r.FailMessage,
+                .Select(r => new ImplementorViewModel(r.Id, r.LastName, r.FirstName, r.MiddleName, r.Message,
+                    r.FailMessage,
                     GetStartDate(r), GetStatuses(r)))
                 .ToList();
 
@@ -58,7 +59,7 @@ namespace GosWebApi.Controllers
         private IEnumerable<StatusViewModel> GetStatuses(Report report)
         {
             var statuses = report.ReportStatuses.Select(rs => new StatusViewModel
-                { Id = rs.StatusId, Datetime = rs.Datetime, Name = rs.Status.Name });
+                { Id = rs.StatusId, Datetime = rs.Datetime, Name = rs.Status.Name, Order = rs.Status.Order });
             return statuses;
         }
 

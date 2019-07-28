@@ -30,7 +30,7 @@ namespace GosWebApi
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var context = services.GetRequiredService<ApplicationContext>();
                     // TODO: Перезаполнение базы -- РАССКОМЕНТИРОВАТЬ ПОСЛЕ!!!
-                    //await DBInitializer.InitializeAsync(context, userManager, rolesManager);
+                    await DBInitializer.InitializeAsync(context, userManager, rolesManager);
                 }
                 catch (Exception ex)
                 {
