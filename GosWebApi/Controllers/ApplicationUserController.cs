@@ -65,7 +65,7 @@ namespace GosWebApi.Controllers
         //}
 
         [HttpPost]
-        [Route("/login")]
+        [Route("/api/login")]
         //POST : /api/ApplicationUser/Login
         public async Task<IActionResult> Login(LoginModel model)
         {

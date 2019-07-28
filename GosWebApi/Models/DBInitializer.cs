@@ -26,7 +26,7 @@ namespace GosWebApi.Models
             db.SubThemes.RemoveRange(db.SubThemes.ToList());
             db.Themes.RemoveRange(db.Themes.ToList());
             db.Companies.RemoveRange(db.Companies.ToList());
-            db.Reports.RemoveRange(db.Reports.ToList());
+            db.Reports.RemoveRange(db.Reports.Include(r=>r.ReportStatuses).ToList());
             db.Statuses.RemoveRange(db.Statuses.ToList());
             db.Regions.RemoveRange(db.Regions.ToList());
             db.Companies.RemoveRange(db.Companies.ToList());
@@ -69,32 +69,38 @@ namespace GosWebApi.Models
             db.Statuses.Add(new Status
             {
                 Id = Guid.NewGuid(),
-                Name = "Отклонен"
+                Name = "Отклонен",
+                Order = 5
             });
             db.Statuses.Add(new Status
             {
                 Id = Guid.NewGuid(),
-                Name = "Ожидание оплаты"
+                Name = "Ожидание оплаты",
+                Order = 1
             });
             db.Statuses.Add(new Status
             {
                 Id = Guid.NewGuid(),
-                Name = "Принят в обработку"
+                Name = "Принят в обработку",
+                Order = 0
             });
             db.Statuses.Add(new Status
             {
                 Id = Guid.NewGuid(),
-                Name = "Исполнение"
+                Name = "Исполнение",
+                Order = 2
             });
             db.Statuses.Add(new Status
             {
                 Id = Guid.NewGuid(),
-                Name = "Проверка"
+                Name = "Проверка",
+                Order = 3
             });
             db.Statuses.Add(new Status
             {
                 Id = Guid.NewGuid(),
-                Name = "Завершен"
+                Name = "Завершен",
+                Order = 4
             });
             db.SaveChanges();
 
@@ -114,59 +120,58 @@ namespace GosWebApi.Models
             db.SaveChanges();
 
             // Beda
+            //Report report = new Report
+            //{
+            //    Id = Guid.Parse("CE11234F-D975-4AD4-A07F-B3175045D4E5"),
+            //    LastName = "Клюев",
+            //    FirstName = "Антон",
+            //    MiddleName = "Александрович",
+            //    Message = "\"Замороженная\" стройка",
+            //    FailMessage = "Стройку так и не разморозили...",
+            //    Region = r1,
+            //    Address = "г. Курск, пр-т Победы, дом 32, кв. 192",
+            //    Email = "freemandns@mail.ru",
+            //    CompanyId = c1.Id,
+            //    Mark = 1,
+            //    SubTheme = subTheme11,
+            //    MarkDescription = "Работа не выполнена"
+            //};
 
-            Report report = new Report
-            {
-                Id = Guid.Parse("CE11234F-D975-4AD4-A07F-B3175045D4E5"),
-                LastName = "Клюев",
-                FirstName = "Антон",
-                MiddleName = "Александрович",
-                Message = "\"Замороженная\" стройка",
-                FailMessage = "Стройку так и не разморозили...",
-                Region = r1,
-                Address = "г. Курск, пр-т Победы, дом 32, кв. 192",
-                Email = "freemandns@mail.ru",
-                CompanyId = c1.Id,
-                Mark = 1,
-                SubTheme = subTheme11,
-                MarkDescription = "Работа не выполнена"
-            };
+            //var report2 = new Report
+            //{
+            //    Id = Guid.Parse("DCA26404-32BC-473B-8D45-AEBDE68535C9"),
+            //    LastName = "Николенко",
+            //    FirstName = "Анна",
+            //    MiddleName = "Петровна",
+            //    Message = "Безопасная дорога в школу на дорогах в границах городских округов и сельских поселений",
+            //    FailMessage = string.Empty,
+            //    Region = r2,
+            //    Address = "г. Курск, пр-т Победы, дом 32, кв. 192",
+            //    Email = "freemandns@mail.ru",
+            //    CompanyId = c2.Id,
+            //    Mark = 1,
+            //    SubTheme = subTheme21,
+            //    MarkDescription = "Работа не выполнена"
+            //};
 
-            var report2 = new Report
-            {
-                Id = Guid.Parse("DCA26404-32BC-473B-8D45-AEBDE68535C9"),
-                LastName = "Николенко",
-                FirstName = "Анна",
-                MiddleName = "Петровна",
-                Message = "Безопасная дорога в школу на дорогах в границах городских округов и сельских поселений",
-                FailMessage = string.Empty,
-                Region = r2,
-                Address = "г. Курск, пр-т Победы, дом 32, кв. 192",
-                Email = "freemandns@mail.ru",
-                CompanyId = c2.Id,
-                Mark = 1,
-                SubTheme = subTheme21,
-                MarkDescription = "Работа не выполнена"
-            };
+            //db.Reports.Add(report);
+            //db.Reports.Add(report2);
+            //db.SaveChanges();
 
-            db.Reports.Add(report);
-            db.Reports.Add(report2);
-            db.SaveChanges();
-
-            report.ReportStatuses.Add(new ReportStatus
-            {
-                ReportId = Guid.Parse("CE11234F-D975-4AD4-A07F-B3175045D4E5"),
-                Status = db.Statuses.First(),
-                Datetime = DateTime.Now
-            });
+            //report.ReportStatuses.Add(new ReportStatus
+            //{
+            //    ReportId = Guid.Parse("CE11234F-D975-4AD4-A07F-B3175045D4E5"),
+            //    Status = db.Statuses.First(),
+            //    Datetime = DateTime.Now
+            //});
             
-            report.ReportStatuses.Add(new ReportStatus
-            {
-                ReportId = Guid.Parse("DCA26404-32BC-473B-8D45-AEBDE68535C9"),
-                Status = db.Statuses.Last(),
-                Datetime = DateTime.Now
-            });
-            db.SaveChanges();
+            //report.ReportStatuses.Add(new ReportStatus
+            //{
+            //    ReportId = Guid.Parse("DCA26404-32BC-473B-8D45-AEBDE68535C9"),
+            //    Status = db.Statuses.Last(),
+            //    Datetime = DateTime.Now
+            //});
+            //db.SaveChanges();
 
 
             // add users to company

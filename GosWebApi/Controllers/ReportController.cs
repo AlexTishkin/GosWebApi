@@ -19,7 +19,7 @@ namespace GosWebApi.Controllers
         {
             _db = context;
         }
-
+        // TEST: 0k
         [HttpGet]
         [Route("/api/themes")]
         // GET api/themes
@@ -30,6 +30,7 @@ namespace GosWebApi.Controllers
             return Json(themeViewModels);
         }
 
+        // TEST: 0k
         [HttpPost]
         [Route("/api/report")]
         //POST : /api/report
@@ -78,7 +79,7 @@ namespace GosWebApi.Controllers
             return Ok();
         }
 
-
+        // TEST: 0k
         [HttpGet]
         [Route("/api/reports/{email}")]
         //POST : /api/reports
@@ -99,7 +100,7 @@ namespace GosWebApi.Controllers
                         , GetThemeName(r)
                         , r.SubTheme.Name
                         // ТУТ КОСЯК!!! ИСПРАВИТЬ В БАЗЕ
-                        , DateTime.Now
+                        , GetStartDate(r)
                         , GetStatuses(r)))
                 .ToList();
 
@@ -133,6 +134,16 @@ namespace GosWebApi.Controllers
 
         #endregion
 
+
+        [HttpGet]
+        [Route("/api/statuses")]
+        //GET : /api/setStatus
+        public async Task<IActionResult> GetStatuses()
+        {
+            var statuses = await _db.Statuses.Select(s => new Ref(s.Id, s.Name)).ToListAsync();
+            return Json(statuses);
+        }
+
         [HttpPost]
         [Route("/api/setStatus")]
         //POST : /api/setStatus
@@ -162,5 +173,6 @@ namespace GosWebApi.Controllers
             _db.SaveChanges();
             return Ok();
         }
+
     }
 }
