@@ -27,5 +27,14 @@ namespace GosWebApi.Models
             CompanySubThemes = new List<CompanySubTheme>();
             Reports = new List<Report>();
         }
+
+        public SubTheme(Guid id, string name, Theme theme)
+        {
+            Id = id;
+            Name = name;
+            Theme = theme;
+            CompanySubThemes = new List<CompanySubTheme>();
+            Reports = new List<Report>();
+        }
     }
 }

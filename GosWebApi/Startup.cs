@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GosWebApi.Models;
+﻿using GosWebApi.Models;
+using GosWebApi.Services.Core;
+using GosWebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
 
 namespace GosWebApi
 {
@@ -37,6 +34,7 @@ namespace GosWebApi
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
+            // Identity
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
@@ -75,6 +73,9 @@ namespace GosWebApi
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+            // Custom services
+            services.AddTransient<IAuthService, AuthService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -84,6 +85,7 @@ namespace GosWebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            // Allow any origin (In debugging time)
             app.UseCors(builder =>
                 builder
                     .AllowAnyOrigin()

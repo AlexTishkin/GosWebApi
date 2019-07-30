@@ -15,9 +15,9 @@ namespace GosWebApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public int Order { get; set; }
-
         public string Name { get; set; }
+
+        public int Order { get; set; }
 
         public ICollection<ReportStatus> ReportStatuses { get; set; }
 
@@ -26,11 +26,11 @@ namespace GosWebApi.Models
             ReportStatuses = new List<ReportStatus>();
         }
 
-        public Status(Guid id, int order, string name)
+        public Status(Guid id, string name, int order)
         {
             Id = id;
-            Order = order;
             Name = name;
+            Order = order;
         }
     }
 }

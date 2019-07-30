@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GosWebApi.Models
 {
@@ -30,5 +26,23 @@ namespace GosWebApi.Models
             CompanySubThemes = new List<CompanySubTheme>();
             Reports = new List<Report>();
         }
+
+        public Company(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public void AddSubThemes(params SubTheme[] subThemes)
+        {
+            if (subThemes is null || subThemes.Length == 0) return;
+            if (CompanySubThemes is null) CompanySubThemes = new List<CompanySubTheme>();
+
+            foreach (var subTheme in subThemes)
+            {
+                CompanySubThemes.Add(new CompanySubTheme(Id, subTheme.Id));
+            }
+        }
+
     }
 }

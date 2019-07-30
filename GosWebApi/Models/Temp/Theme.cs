@@ -14,6 +14,7 @@ namespace GosWebApi.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
         public string Name { get; set; }
 
         public ICollection<SubTheme> SubThemes { get; set; }
@@ -21,6 +22,11 @@ namespace GosWebApi.Models
         public Theme()
         {
             SubThemes = new List<SubTheme>();
+        }
+
+        public Theme(string name)
+        {
+            Name = name;
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GosWebApi.Models
@@ -14,14 +9,18 @@ namespace GosWebApi.Models
         {
         }
 
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
 
-        // Entities
         public DbSet<Company> Companies { get; set; }
+
         public DbSet<Theme> Themes { get; set; }
+
         public DbSet<SubTheme> SubThemes { get; set; }
+
         public DbSet<Status> Statuses { get; set; }
+
         public DbSet<Region> Regions { get; set; }
+
         public DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

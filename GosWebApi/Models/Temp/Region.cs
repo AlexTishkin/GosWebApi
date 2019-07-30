@@ -23,5 +23,11 @@ namespace GosWebApi.Models
         {
             Reports = new List<Report>();
         }
+
+        public Region(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }
