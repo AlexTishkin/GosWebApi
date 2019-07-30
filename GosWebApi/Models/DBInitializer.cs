@@ -268,8 +268,7 @@ namespace GosWebApi.Models
 
             if (await userManager.FindByNameAsync(implementerEmail) == null)
             {
-                ApplicationUser implementer = new ApplicationUser
-                    {Email = implementerEmail, UserName = implementerEmail};
+                ApplicationUser implementer = new ApplicationUser {Email = implementerEmail, UserName = implementerEmail};
                 IdentityResult result = await userManager.CreateAsync(implementer, implementerPassword);
                 if (result.Succeeded) await userManager.AddToRoleAsync(implementer, ApplicationRoles.IMPLEMENTER);
             }
@@ -284,8 +283,7 @@ namespace GosWebApi.Models
             // company 2
             if (await userManager.FindByNameAsync(implementer2Email) == null)
             {
-                ApplicationUser implementer2 = new ApplicationUser
-                    {Email = implementerEmail, UserName = implementer2Email};
+                ApplicationUser implementer2 = new ApplicationUser {Email = implementer2Email, UserName = implementer2Email};
                 IdentityResult result = await userManager.CreateAsync(implementer2, implementer2Password);
                 if (result.Succeeded) await userManager.AddToRoleAsync(implementer2, ApplicationRoles.IMPLEMENTER);
             }
