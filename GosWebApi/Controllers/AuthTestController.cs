@@ -22,6 +22,7 @@ namespace GosWebApi.Controllers
 
         [HttpGet]
         [Authorize]
+        [Route("GetUserProfile")]
         //GET : /api/UserProfile
         public async Task<IActionResult> GetUserProfile()
         {
