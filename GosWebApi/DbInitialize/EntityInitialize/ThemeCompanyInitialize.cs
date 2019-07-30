@@ -1,6 +1,7 @@
 ﻿using GosWebApi.Models;
 using System;
 using System.Threading.Tasks;
+using GosWebApi.Models.Entities;
 using GosWebApi.Services.Interfaces;
 
 namespace GosWebApi.DbInitialize.EntityInitialize

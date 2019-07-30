@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GosWebApi.Models;
+using GosWebApi.Models.Entities;
 using GosWebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -31,20 +32,18 @@ namespace GosWebApi.Controllers
         //POST : /api/implementorReports
         public async Task<IActionResult> GetImplementorReports()
         {
-            var userId = HttpContext.User.Claims.FirstOrDefault(t => t.Type == "UserID");
-            if (userId == null) return StatusCode(401);
+            //var userId = HttpContext.User.Claims.FirstOrDefault(t => t.Type == "UserID");
+            var userId = User.Claims.First(c => c.Type == "UserID").Value;
+            //if (userId == null) return StatusCode(401);
 
-            var currentUser = await _userManager.FindByIdAsync(userId.Value);
+            var currentUser = await _userManager.FindByIdAsync(userId);
 
             var reports = _db.Reports
                 .Include(r => r.Company)
                 .Include(r => r.ReportStatuses)
                 .ThenInclude(r => r.Status)
                 .Where(r => r.CompanyId == currentUser.CompanyId)
-                //.Where(r => r.CompanyId == Guid.Parse("9038b2cc-5f36-4138-a852-6eaddced11f9"))
-                .Select(r => new ImplementorViewModel(r.Id, r.LastName, r.FirstName, r.MiddleName, r.Message,
-                    r.FailMessage,
-                    GetStartDate(r), GetStatuses(r)))
+                .Select(r => new ImplementorViewModel(r.Id, r.LastName, r.FirstName, r.MiddleName, r.Message,  r.FailMessage,  GetStartDate(r), GetStatuses(r)))
                 .ToList();
 
             return Json(reports);

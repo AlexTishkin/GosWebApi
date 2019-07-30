@@ -11,11 +11,11 @@ namespace GosWebApi.Controllers
     // Test для проверки авторизации
     [Route("api/[controller]")]
     [ApiController]
-    public class UserProfileController : ControllerBase
+    public class AuthTestController : ControllerBase
     {
-        private UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserProfileController(UserManager<ApplicationUser> userManager)
+        public AuthTestController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
@@ -23,31 +23,23 @@ namespace GosWebApi.Controllers
         [HttpGet]
         [Authorize]
         //GET : /api/UserProfile
-        public async Task<Object> GetUserProfile()
+        public async Task<IActionResult> GetUserProfile()
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var userId = User.Claims.First(c => c.Type == "UserID").Value;
             var user = await _userManager.FindByIdAsync(userId);
-            return new
-            {
-                user.Email,
-                user.UserName
-            };
+            return Ok(new {user.Email, user.UserName});
         }
 
         [HttpGet]
         [Authorize(Roles = "director")]
         [Route("ForDirector")]
-        public string GetForDirector()
-        {
-            return "Web method for Director";
-        }
+        //GET : /api/AuthTest/GetForDirector
+        public string GetForDirector() => "Web method for Director";
 
         [HttpGet]
         [Authorize(Roles = "implementer")]
         [Route("ForImplementer")]
-        public string GetImplementer()
-        {
-            return "Web method for Implementer";
-        }
+        //GET : /api/AuthTest/GetForImplementer
+        public string GetForImplementer() => "Web method for Implementer";
     }
 }

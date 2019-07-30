@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GosWebApi.Models
+namespace GosWebApi.Models.Entities
 {
     public class CompanySubTheme
     {

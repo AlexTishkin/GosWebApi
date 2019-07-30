@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GosWebApi.Models;
+﻿using GosWebApi.Models;
+using GosWebApi.Models.Entities;
 using GosWebApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GosWebApi.Controllers
 {
@@ -19,7 +20,7 @@ namespace GosWebApi.Controllers
         {
             _db = context;
         }
-        // TEST: 0k
+
         [HttpGet]
         [Route("/api/themes")]
         // GET api/themes
@@ -30,7 +31,6 @@ namespace GosWebApi.Controllers
             return Json(themeViewModels);
         }
 
-        // TEST: 0k
         [HttpPost]
         [Route("/api/report")]
         //POST : /api/report
@@ -51,7 +51,7 @@ namespace GosWebApi.Controllers
                             c.CompanySubThemes.Count(cs => cs.SubThemeId == report.SubThemeId) > 0)
                 .ToList();
 
-            // TODO: Выбор первой компании, реализовать логику выбора оптимальной компании
+            // TODO: (choice of first company. realize an optimal company choice)
             var implementerCompanyId = posibleCompanies.First();
 
             var createdReport = new Report
@@ -79,7 +79,6 @@ namespace GosWebApi.Controllers
             return Ok();
         }
 
-        // TEST: 0k
         [HttpGet]
         [Route("/api/reports/{email}")]
         //POST : /api/reports
@@ -99,7 +98,7 @@ namespace GosWebApi.Controllers
                     new ReportArrayItemViewModel(r.Company.Name
                         , GetThemeName(r)
                         , r.SubTheme.Name
-                        // ТУТ КОСЯК!!! ИСПРАВИТЬ В БАЗЕ
+                        // TODO: fix bug (in database)
                         , GetStartDate(r)
                         , GetStatuses(r)))
                 .ToList();
@@ -173,6 +172,5 @@ namespace GosWebApi.Controllers
             _db.SaveChanges();
             return Ok();
         }
-
     }
 }

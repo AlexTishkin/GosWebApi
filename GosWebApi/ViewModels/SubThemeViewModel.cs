@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GosWebApi.Models;
+using GosWebApi.Models.Entities;
 
 namespace GosWebApi.ViewModels
 {
